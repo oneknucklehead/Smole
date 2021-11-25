@@ -1,0 +1,79 @@
+.productName {
+  font-size: xx-large;
+}
+.dropdownContainer {
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  cursor: pointer;
+}
+
+.category {
+  padding: 0;
+  margin: 0;
+  font-weight: 900;
+  color: rgb(114, 114, 114);
+}
+.shopName {
+  padding: 0;
+  margin: 0;
+}
+.button {
+  background-color: #37bdae;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+select {
+  margin-left: 15px;
+  border: 1px solid rgb(141, 141, 141);
+  border-radius: 7px;
+  cursor: pointer;
+  padding: 1px 5px;
+}
+
+.sizeContainer {
+  display: flex;
+  /* overflow: hidden; */
+}
+
+.sizeContainer input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  /* height: 2px;
+  width: 2px; */
+  border: 0;
+  overflow: hidden;
+}
+.sizeContainer input:disabled + label {
+  color: red;
+  cursor: not-allowed;
+}
+
+.sizeContainer label {
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  height: 45px;
+  width: 45px;
+  padding: 14px 13px;
+  margin-right: 10px;
+  border: 2px solid rgb(141, 141, 141);
+  transition: all 0.1s ease-in-out;
+}
+
+.sizeContainer label:hover {
+  cursor: pointer;
+}
+
+.sizeContainer input:checked + label {
+  border: 3px solid #37bdae;
+}
+
+.sizeContainer label:first-of-type {
+  border-radius: 100%;
+}
