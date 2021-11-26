@@ -7,7 +7,12 @@ import {
   shopListReducer,
 } from './Reducers/shopReducers.js'
 import { cartReducer } from './Reducers/cartReducers.js'
-import { loginReducer } from './Reducers/userReducers.js'
+import {
+  detailsReducer,
+  loginReducer,
+  registerReducer,
+  updateDetailsReducer,
+} from './Reducers/userReducers.js'
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
@@ -22,6 +27,9 @@ const reducer = combineReducers({
   productDetails: productDetailsReducer,
   cart: cartReducer,
   login: loginReducer,
+  register: registerReducer,
+  details: detailsReducer,
+  updateDetails: updateDetailsReducer,
 })
 const initialState = {
   cart: { cartItems: cartItemsFromStorage },

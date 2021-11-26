@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Form, Row, Col, Nav } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Components/Message.js'
 import Loader from '../Components/Loader.js'
@@ -62,7 +62,7 @@ const LoginScreen = ({ history, location }) => {
                   <Form.Label>Email Address</Form.Label>
                   <Form.Control
                     type='email'
-                    placeholder='Enter email'
+                    placeholder='Enter email*'
                     value={email}
                     style={{ borderRadius: '5px' }}
                     onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ const LoginScreen = ({ history, location }) => {
                   <Form.Label className='my-3'>Password</Form.Label>
                   <Form.Control
                     type='password'
-                    placeholder='Enter password'
+                    placeholder='Enter password*'
                     value={password}
                     style={{ borderRadius: '5px' }}
                     onChange={(e) => setPassword(e.target.value)}

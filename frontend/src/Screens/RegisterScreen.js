@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Form, Row, Col, Nav } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Components/Message.js'
 import Loader from '../Components/Loader.js'
 import FormContainer from '../Components/FormContainer.js'
-import { userLogin } from '../Actions/userActions.js'
+import { userRegister } from '../Actions/userActions.js'
 import './LoginScreen.css'
 
 const RegisterScreen = ({ history, location }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [cPassword, setCPassword] = useState('')
+  const [errorPass, setErrorPass] = useState('')
 
   const dispatch = useDispatch()
-  const login = useSelector((state) => state.login)
-  const { loading, error, userInfo } = login
+  const register = useSelector((state) => state.register)
+  const { loading, error, userInfo } = register
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
-  const RegisterHandler = (e) => {
+  const registerHandler = (e) => {
     e.preventDefault()
-    console.log(email + ' ' + password)
-    // dispatch(userLogin({ email, password }))
+    if (password !== cPassword) {
+      setErrorPass('Passwords not matched.')
+    } else {
+      setErrorPass('')
+      dispatch(userRegister({ name, email, password }))
+    }
   }
-  //   useEffect(() => {
-  //     if (userInfo) {
-  //       history.push(redirect)
-  //     }
-  //   }, [history, redirect, userInfo])
+  useEffect(() => {
+    if (userInfo) {
+      history.push(redirect)
+    }
+  }, [history, redirect, userInfo])
 
   return (
     <>
@@ -58,12 +64,12 @@ const RegisterScreen = ({ history, location }) => {
               </NavLink>
             </Row>
             <Row className='infoContainer'>
-              <Form onSubmit={RegisterHandler}>
+              <Form onSubmit={registerHandler}>
                 <Form.Group controlId='name'>
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type='name'
-                    placeholder='Enter Name'
+                    placeholder='Enter Name*'
                     value={name}
                     style={{ borderRadius: '5px' }}
                     onChange={(e) => setName(e.target.value)}
@@ -73,7 +79,7 @@ const RegisterScreen = ({ history, location }) => {
                   <Form.Label className='my-3'>Email Address</Form.Label>
                   <Form.Control
                     type='email'
-                    placeholder='Enter email'
+                    placeholder='Enter email*'
                     value={email}
                     style={{ borderRadius: '5px' }}
                     onChange={(e) => setEmail(e.target.value)}
@@ -83,12 +89,23 @@ const RegisterScreen = ({ history, location }) => {
                   <Form.Label className='my-3'>Password</Form.Label>
                   <Form.Control
                     type='password'
-                    placeholder='Enter password'
+                    placeholder='Choose new password*'
                     value={password}
                     style={{ borderRadius: '5px' }}
                     onChange={(e) => setPassword(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
+                <Form.Group controlId='cPassword'>
+                  <Form.Label className='my-3'>Confirm Password</Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder='Confirm Password*'
+                    value={cPassword}
+                    style={{ borderRadius: '5px' }}
+                    onChange={(e) => setCPassword(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+                {errorPass && <p style={{ color: '#ec3d25' }}>Not Matched.</p>}
 
                 <Row>
                   <Col className='d-grid my-4'>
@@ -100,7 +117,7 @@ const RegisterScreen = ({ history, location }) => {
                 <Col>
                   Already a customer?{' '}
                   <Link
-                    to={redirect ? `/login?redirect=${redirect}` : '/register'}
+                    to={redirect ? `/login?redirect=${redirect}` : '/login'}
                   >
                     Login
                   </Link>

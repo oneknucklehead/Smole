@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row, ListGroup, Image } from 'react-bootstrap'
-import Message from '../Components/Message'
 import { addToCart, removeFromCart } from '../Actions/cartActions'
 import './CartScreen.css'
 
@@ -19,10 +18,9 @@ const CartScreen = ({ match, location, history }) => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
-    console.log(id)
   }
   const checkOutHandler = () => {
-    console.log('placed order')
+    history.push('/login?redirect=shipping')
   }
 
   const dispatch = useDispatch()
