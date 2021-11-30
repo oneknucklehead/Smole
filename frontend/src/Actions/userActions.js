@@ -53,6 +53,8 @@ export const userLogin =
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('login')
+  localStorage.removeItem('shipAddress')
+  localStorage.removeItem('paymentMethod')
   dispatch({ type: LOGOUT })
 }
 

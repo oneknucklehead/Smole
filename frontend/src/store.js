@@ -8,6 +8,11 @@ import {
 } from './Reducers/shopReducers.js'
 import { cartReducer } from './Reducers/cartReducers.js'
 import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderPayReducer,
+} from './Reducers/orderReducers.js'
+import {
   detailsReducer,
   loginReducer,
   registerReducer,
@@ -20,6 +25,9 @@ const cartItemsFromStorage = localStorage.getItem('cartItems')
 const loginDataFromStorage = localStorage.getItem('login')
   ? JSON.parse(localStorage.getItem('login'))
   : null
+const shippingAddressFromStorage = localStorage.getItem('shipAddress')
+  ? JSON.parse(localStorage.getItem('shipAddress'))
+  : {}
 
 const reducer = combineReducers({
   shopList: shopListReducer,
@@ -30,9 +38,15 @@ const reducer = combineReducers({
   register: registerReducer,
   details: detailsReducer,
   updateDetails: updateDetailsReducer,
+  orderCreated: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
 })
 const initialState = {
-  cart: { cartItems: cartItemsFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    shippingAddress: shippingAddressFromStorage,
+  },
   login: { userInfo: loginDataFromStorage },
 }
 const middleWare = [thunk]
