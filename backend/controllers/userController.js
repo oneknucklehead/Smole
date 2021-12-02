@@ -14,6 +14,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isSeller: user.isSeller,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
   } else {
@@ -33,6 +34,7 @@ const getProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isSeller: user.isSeller,
+      isAdmin: user.isAdmin,
     })
   } else {
     res.status(404)
@@ -57,6 +59,7 @@ const updateProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isSeller: updatedUser.isSeller,
+      isAdmin: user.isAdmin,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -65,6 +68,9 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 })
 
+//@desc     Register user profile
+//@route    POST /api/users
+//@access   Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body
 
@@ -85,6 +91,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isSeller: user.isSeller,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
   } else {
@@ -93,4 +100,12 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 })
 
-export { authUser, getProfile, updateProfile, registerUser }
+//@desc     Get all users
+//@route    GET /api/users
+//@access   ADMINS ONLY/Private
+const adminGetUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
+})
+
+export { authUser, getProfile, updateProfile, registerUser, adminGetUsers }

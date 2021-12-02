@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { ORDER_LIST_RESET } from '../Constants/orderConstants'
 import {
   DETAILS_FAIL,
   DETAILS_REQUEST,
+  DETAILS_RESET,
   DETAILS_SUCCESS,
   LOGIN_FAIL,
   LOGIN_REQUEST,
@@ -13,6 +15,9 @@ import {
   UPDATE_DETAILS_FAIL,
   UPDATE_DETAILS_REQUEST,
   UPDATE_DETAILS_SUCCESS,
+  USERS_LIST_FAIL,
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
 } from '../Constants/userConstants'
 
 export const userLogin =
@@ -53,9 +58,12 @@ export const userLogin =
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('login')
-  localStorage.removeItem('shipAddress')
+  // localStorage.removeItem('shipAddress')
   localStorage.removeItem('paymentMethod')
+  localStorage.removeItem('cartItems')
   dispatch({ type: LOGOUT })
+  dispatch({ type: DETAILS_RESET })
+  dispatch({ type: ORDER_LIST_RESET })
 }
 
 export const userRegister =
@@ -168,6 +176,43 @@ export const updateUserDetails = (user) => async (dispatch, getState) => {
     }
     dispatch({
       type: UPDATE_DETAILS_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USERS_LIST_REQUEST,
+    })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/users`, config)
+
+    dispatch({
+      type: USERS_LIST_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USERS_LIST_FAIL,
       payload: message,
     })
   }

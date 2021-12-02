@@ -1,6 +1,7 @@
 import {
   DETAILS_FAIL,
   DETAILS_REQUEST,
+  DETAILS_RESET,
   DETAILS_SUCCESS,
   LOGIN_FAIL,
   LOGIN_REQUEST,
@@ -12,6 +13,9 @@ import {
   UPDATE_DETAILS_FAIL,
   UPDATE_DETAILS_REQUEST,
   UPDATE_DETAILS_SUCCESS,
+  USERS_LIST_FAIL,
+  USERS_LIST_REQUEST,
+  USERS_LIST_SUCCESS,
 } from '../Constants/userConstants'
 
 export const loginReducer = (state = {}, action) => {
@@ -52,8 +56,10 @@ export const detailsReducer = (state = { user: {} }, action) => {
       return { loading: false, user: action.payload }
     case DETAILS_FAIL:
       return { loading: false, error: action.payload }
-    case LOGOUT:
-      return {}
+    case DETAILS_RESET:
+      return { user: {} }
+    // case LOGOUT:
+    //   return {}
     default:
       return state
   }
@@ -69,6 +75,19 @@ export const updateDetailsReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case LOGOUT:
       return {}
+    default:
+      return state
+  }
+}
+
+export const userListReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case USERS_LIST_REQUEST:
+      return { loading: true }
+    case USERS_LIST_SUCCESS:
+      return { loading: false, users: action.payload }
+    case USERS_LIST_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }
