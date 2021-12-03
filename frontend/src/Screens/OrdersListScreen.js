@@ -37,21 +37,6 @@ const OrdersListScreen = ({ history }) => {
             <Link to='/myorders' className='link'>
               <ListGroup.Item action>Orders</ListGroup.Item>
             </Link>
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/userlist' className='link'>
-                <ListGroup.Item action>Users</ListGroup.Item>
-              </Link>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/productlist' className='link'>
-                <ListGroup.Item action>Products</ListGroup.Item>
-              </Link>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/orderlist' className='link'>
-                <ListGroup.Item action>Orders</ListGroup.Item>
-              </Link>
-            )}
           </ListGroup>
         </Col>
         {loading ? (

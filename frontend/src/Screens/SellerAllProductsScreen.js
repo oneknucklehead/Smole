@@ -1,55 +1,45 @@
+import Button from '@restart/ui/esm/Button'
 import React, { useEffect } from 'react'
-import { Col, ListGroup, Row, Table, Button } from 'react-bootstrap'
+import { Col, ListGroup, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  adminDeleteShop,
   listShops,
   productDelete,
+  sellerShopsList,
 } from '../Actions/shopActions.js'
 import Loader from '../Components/Loader'
 import Message from '../Components/Message.js'
 import './AdminAllProductsScreen.css'
 
-const AdminAllProducts = ({ history }) => {
+const SellerAllProductsScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const shopList = useSelector((state) => state.shopList)
-  const { loading, error, shops } = shopList
+  const sellerShops = useSelector((state) => state.sellerShops)
+  const { loading, error, shops } = sellerShops
 
   const login = useSelector((state) => state.login)
   const { userInfo } = login
 
   const productDeleted = useSelector((state) => state.productDeleted)
   const {
-    loading: loadingProduct,
-    error: errorProduct,
-    result: resultProduct,
+    loading: loadingDeleted,
+    error: errorDeleted,
+    result,
   } = productDeleted
-  const shopDeleted = useSelector((state) => state.shopDeleted)
-  const {
-    loading: loadingShop,
-    error: errorShop,
-    result: resultShop,
-  } = shopDeleted
 
-  const deleteProductHandler = (shopid, productid) => {
+  const deleteHandler = (shopid, productid) => {
     if (window.confirm('are you sure you want to delete this product?')) {
       dispatch(productDelete(shopid, productid))
     }
   }
-  const deleteShopHandler = (shopid) => {
-    if (window.confirm('are you sure you want to delete this shop?')) {
-      dispatch(adminDeleteShop(shopid))
-    }
-  }
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listShops())
+    if (userInfo && userInfo.isSeller) {
+      dispatch(sellerShopsList())
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo, resultProduct, resultShop])
+  }, [dispatch, history, userInfo, result])
 
   return (
     <>
@@ -62,39 +52,18 @@ const AdminAllProducts = ({ history }) => {
             <Message variant='danger'>{error}</Message>
           ) : (
             <>
-              {loadingProduct && <Loader />}
-              {loadingShop && <Loader />}
-              {errorProduct && (
-                <Message variant='danger'>{errorProduct}</Message>
+              {loadingDeleted && <Loader />}
+              {errorDeleted && (
+                <Message variant='danger'>{errorDeleted}</Message>
               )}
-              {errorShop && <Message variant='danger'>{errorShop}</Message>}
-              {resultProduct && (
-                <Message variant='success'>{resultProduct.message}</Message>
-              )}
-              {resultShop && (
-                <Message variant='success'>{resultShop.message}</Message>
-              )}
+              {result && <Message variant='success'>{result.message}</Message>}
               {shops?.map((shop) => (
                 <>
-                  <Row className='my-3'>
-                    <Col>
-                      <span>
-                        <button
-                          className='shopDelete'
-                          onClick={() => deleteShopHandler(shop._id)}
-                        >
-                          ✕
-                        </button>
-                      </span>
-                      <p className='shopHeader'>
-                        <Link
-                          style={{ textDecoration: 'none' }}
-                          to={`/shop/${shop._id}`}
-                        >
-                          {shop.name}
-                        </Link>
-                      </p>
-                    </Col>
+                  <Row className='my-2'>
+                    <h3>
+                      {' '}
+                      <Link to={`/shop/${shop._id}`}>{shop.name}</Link>
+                    </h3>
                   </Row>
                   <Table striped bordered hover responsive className='table-sm'>
                     <thead>
@@ -117,9 +86,10 @@ const AdminAllProducts = ({ history }) => {
                             <td>{product.price}</td>
                             <td>
                               <button
+                                variant='danger'
                                 className='deleteBtn'
                                 onClick={() =>
-                                  deleteProductHandler(shop._id, product._id)
+                                  deleteHandler(shop._id, product._id)
                                 }
                               >
                                 <i className='fas fa-trash'></i>
@@ -140,4 +110,4 @@ const AdminAllProducts = ({ history }) => {
   )
 }
 
-export default AdminAllProducts
+export default SellerAllProductsScreen

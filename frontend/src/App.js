@@ -18,6 +18,8 @@ import OrderScreen from './Screens/OrderScreen'
 import OrdersListScreen from './Screens/OrdersListScreen'
 import AdminAllUsersScreen from './Screens/AdminAllUsersScreen'
 import AdminAllProductsScreen from './Screens/AdminAllProductsScreen'
+import AdminAllOrdersScreen from './Screens/AdminAllOrdersScreen'
+import SellerAllProductsScreen from './Screens/SellerAllProductsScreen'
 const App = () => {
   return (
     <>
@@ -37,7 +39,12 @@ const App = () => {
             <Route path='/register' component={RegisterScreen} />
             <Route path='/profile' component={ProfileScreen} />
             <Route path='/myorders' component={OrdersListScreen} />
+            <Route
+              path='/seller/productlist'
+              component={SellerAllProductsScreen}
+            />
             <Route path='/admin/userlist' component={AdminAllUsersScreen} />
+            <Route path='/admin/orderlist' component={AdminAllOrdersScreen} />
             <Route
               path='/admin/productlist'
               component={AdminAllProductsScreen}

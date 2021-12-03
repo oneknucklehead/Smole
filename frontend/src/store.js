@@ -2,7 +2,10 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {
+  productDeletedReducer,
   productDetailsReducer,
+  sellerShopsReducer,
+  shopDeletedReducer,
   shopDetailsReducer,
   shopListReducer,
 } from './Reducers/shopReducers.js'
@@ -34,7 +37,10 @@ const shippingAddressFromStorage = localStorage.getItem('shipAddress')
 const reducer = combineReducers({
   shopList: shopListReducer,
   shopDetails: shopDetailsReducer,
+  shopDeleted: shopDeletedReducer,
+  sellerShops: sellerShopsReducer,
   productDetails: productDetailsReducer,
+  productDeleted: productDeletedReducer,
   cart: cartReducer,
   login: loginReducer,
   register: registerReducer,

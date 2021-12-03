@@ -1,7 +1,16 @@
 import {
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
+  SELLER_SHOP_DETAILS_FAIL,
+  SELLER_SHOP_DETAILS_REQUEST,
+  SELLER_SHOP_DETAILS_SUCCESS,
+  SHOP_DELETE_FAIL,
+  SHOP_DELETE_REQUEST,
+  SHOP_DELETE_SUCCESS,
   SHOP_DETAILS_FAIL,
   SHOP_DETAILS_REQUEST,
   SHOP_DETAILS_SUCCESS,
@@ -43,6 +52,45 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
     case PRODUCT_DETAILS_SUCCESS:
       return { loading: false, product: action.payload }
     case PRODUCT_DETAILS_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const productDeletedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return { loading: true }
+    case PRODUCT_DELETE_SUCCESS:
+      return { loading: false, result: action.payload }
+    case PRODUCT_DELETE_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const sellerShopsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SELLER_SHOP_DETAILS_REQUEST:
+      return { loading: true }
+    case SELLER_SHOP_DETAILS_SUCCESS:
+      return { loading: false, shops: action.payload }
+    case SELLER_SHOP_DETAILS_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const shopDeletedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOP_DELETE_REQUEST:
+      return { loading: true }
+    case SHOP_DELETE_SUCCESS:
+      return { loading: false, result: action.payload }
+    case SHOP_DELETE_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

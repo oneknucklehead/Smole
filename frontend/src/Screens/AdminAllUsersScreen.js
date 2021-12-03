@@ -34,31 +34,6 @@ const AdminAllUsersScreen = ({ history, location }) => {
   return (
     <>
       <Row>
-        {/* <Col md={3}>
-          <ListGroup>
-            <Link to='/profile' className='link'>
-              <ListGroup.Item action>Profile</ListGroup.Item>
-            </Link>
-            <Link to='/myorders' className='link'>
-              <ListGroup.Item action>Orders</ListGroup.Item>
-            </Link>
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/userlist' className='link'>
-                <ListGroup.Item action>Users</ListGroup.Item>
-              </Link>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/productlist' className='link'>
-                <ListGroup.Item action>Products</ListGroup.Item>
-              </Link>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <Link to='/admin/orderlist' className='link'>
-                <ListGroup.Item action>Orders</ListGroup.Item>
-              </Link>
-            )}
-          </ListGroup>
-        </Col> */}
         <Col>
           <h1>Users</h1>
           {loading ? (

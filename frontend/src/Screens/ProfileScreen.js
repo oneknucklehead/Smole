@@ -98,21 +98,6 @@ const ProfileScreen = ({ history, location, match }) => {
               <Link to='/myorders' className='link'>
                 <ListGroup.Item action>Orders</ListGroup.Item>
               </Link>
-              {userInfo && userInfo.isAdmin && (
-                <Link to='/admin/userlist' className='link'>
-                  <ListGroup.Item action>Users</ListGroup.Item>
-                </Link>
-              )}
-              {userInfo && userInfo.isAdmin && (
-                <Link to='/admin/productlist' className='link'>
-                  <ListGroup.Item action>Products</ListGroup.Item>
-                </Link>
-              )}
-              {userInfo && userInfo.isAdmin && (
-                <Link to='/admin/orderlist' className='link'>
-                  <ListGroup.Item action>Orders</ListGroup.Item>
-                </Link>
-              )}
             </ListGroup>
           </Col>
 
@@ -174,6 +159,8 @@ const ProfileScreen = ({ history, location, match }) => {
                               onChange={(e) => setName(e.target.value)}
                             ></Form.Control>
                           </Form.Group>
+                          <p>{userInfo?.isSeller && 'Seller:✔️'}</p>
+                          <p>{userInfo?.isAdmin && 'Admin:✔️'}</p>
                         </Col>
                         <Col lg={6}>
                           <Form.Group controlId='password'>
