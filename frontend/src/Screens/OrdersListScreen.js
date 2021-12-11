@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Loader from '../Components/Loader.js'
 import Message from '../Components/Message.js'
 import './ProfileScreen.css'
-import { userDetails } from '../Actions/userActions.js'
 import { listUserOrders } from '../Actions/orderActions.js'
 
 const OrdersListScreen = ({ history }) => {
@@ -17,7 +16,7 @@ const OrdersListScreen = ({ history }) => {
   const { userInfo } = login
 
   const details = useSelector((state) => state.details)
-  const { loading: loadingdetails, error: errorDetails, user } = details
+  const { user } = details
 
   useEffect(() => {
     if (!userInfo) {

@@ -1,6 +1,13 @@
 import axios from 'axios'
 import { ORDER_LIST_RESET } from '../Constants/orderConstants'
 import {
+  ADMIN_USER_DELETE_FAIL,
+  ADMIN_USER_DELETE_REQUEST,
+  ADMIN_USER_DELETE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_RESET,
+  ADMIN_USER_UPDATE_SUCCESS,
   DETAILS_FAIL,
   DETAILS_REQUEST,
   DETAILS_RESET,
@@ -143,6 +150,88 @@ export const userDetails = (id) => async (dispatch, getState) => {
   }
 }
 
+export const userDetailsUpdateAdmin = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ADMIN_USER_UPDATE_REQUEST,
+    })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config)
+
+    dispatch({
+      type: ADMIN_USER_UPDATE_SUCCESS,
+    })
+    dispatch({
+      type: DETAILS_SUCCESS,
+      payload: data,
+    })
+    dispatch({ type: ADMIN_USER_UPDATE_RESET })
+    // dispatch({ type: DETAILS_RESET })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, Token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: ADMIN_USER_UPDATE_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const userDeleteAdmin = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ADMIN_USER_DELETE_REQUEST,
+    })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.delete(`/api/users/${id}`, config)
+
+    dispatch({
+      type: ADMIN_USER_DELETE_SUCCESS,
+    })
+
+    // dispatch({ type: DETAILS_RESET })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, Token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: ADMIN_USER_DELETE_FAIL,
+      payload: message,
+    })
+  }
+}
+
+//for profile
 export const updateUserDetails = (user) => async (dispatch, getState) => {
   try {
     dispatch({

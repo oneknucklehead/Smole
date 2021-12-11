@@ -19,7 +19,10 @@ import OrdersListScreen from './Screens/OrdersListScreen'
 import AdminAllUsersScreen from './Screens/AdminAllUsersScreen'
 import AdminAllProductsScreen from './Screens/AdminAllProductsScreen'
 import AdminAllOrdersScreen from './Screens/AdminAllOrdersScreen'
+import AdminUserEditScreen from './Screens/AdminUserEditScreen'
 import SellerAllProductsScreen from './Screens/SellerAllProductsScreen'
+import SellerShopEditScreen from './Screens/SellerShopEditScreen'
+import SellerProductEditScreen from './Screens/SellerProductEditScreen'
 const App = () => {
   return (
     <>
@@ -43,7 +46,19 @@ const App = () => {
               path='/seller/productlist'
               component={SellerAllProductsScreen}
             />
+            <Route
+              path={`/seller/shop/:shopid/edit`}
+              component={SellerShopEditScreen}
+            />
+            <Route
+              path={`/seller/:shopid/product/:productid/edit`}
+              component={SellerProductEditScreen}
+            />
             <Route path='/admin/userlist' component={AdminAllUsersScreen} />
+            <Route
+              path='/admin/user/:id/edit'
+              component={AdminUserEditScreen}
+            />
             <Route path='/admin/orderlist' component={AdminAllOrdersScreen} />
             <Route
               path='/admin/productlist'

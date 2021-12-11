@@ -2,12 +2,16 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {
+  productCreatedReducer,
   productDeletedReducer,
   productDetailsReducer,
+  productUpdateReducer,
   sellerShopsReducer,
+  shopCreateReducer,
   shopDeletedReducer,
   shopDetailsReducer,
   shopListReducer,
+  shopUpdateReducer,
 } from './Reducers/shopReducers.js'
 import { cartReducer } from './Reducers/cartReducers.js'
 import {
@@ -17,6 +21,8 @@ import {
   orderPayReducer,
 } from './Reducers/orderReducers.js'
 import {
+  adminUserDeleteReducer,
+  adminUserUpdateReducer,
   detailsReducer,
   loginReducer,
   registerReducer,
@@ -37,10 +43,14 @@ const shippingAddressFromStorage = localStorage.getItem('shipAddress')
 const reducer = combineReducers({
   shopList: shopListReducer,
   shopDetails: shopDetailsReducer,
+  shopCreate: shopCreateReducer,
   shopDeleted: shopDeletedReducer,
+  shopUpdate: shopUpdateReducer,
   sellerShops: sellerShopsReducer,
   productDetails: productDetailsReducer,
   productDeleted: productDeletedReducer,
+  productCreated: productCreatedReducer,
+  productUpdate: productUpdateReducer,
   cart: cartReducer,
   login: loginReducer,
   register: registerReducer,
@@ -50,7 +60,9 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   userOrdersList: orderListReducer,
+  adminUserUpdate: adminUserUpdateReducer,
   usersList: userListReducer,
+  adminUserDelete: adminUserDeleteReducer,
 })
 const initialState = {
   cart: {

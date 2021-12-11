@@ -92,14 +92,6 @@ const shopSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    paymentQR: {
-      type: String,
-      required: true,
-    },
-    paymentUPI: {
-      type: String,
-      required: true,
-    },
     products: [productSchema],
   },
   {

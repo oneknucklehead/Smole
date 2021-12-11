@@ -1,4 +1,11 @@
 import {
+  ADMIN_USER_DELETE_FAIL,
+  ADMIN_USER_DELETE_REQUEST,
+  ADMIN_USER_DELETE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_RESET,
+  ADMIN_USER_UPDATE_SUCCESS,
   DETAILS_FAIL,
   DETAILS_REQUEST,
   DETAILS_RESET,
@@ -58,13 +65,11 @@ export const detailsReducer = (state = { user: {} }, action) => {
       return { loading: false, error: action.payload }
     case DETAILS_RESET:
       return { user: {} }
-    // case LOGOUT:
-    //   return {}
     default:
       return state
   }
 }
-
+//for profile
 export const updateDetailsReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_DETAILS_REQUEST:
@@ -87,6 +92,34 @@ export const userListReducer = (state = { users: [] }, action) => {
     case USERS_LIST_SUCCESS:
       return { loading: false, users: action.payload }
     case USERS_LIST_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const adminUserUpdateReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case ADMIN_USER_UPDATE_REQUEST:
+      return { loading: true }
+    case ADMIN_USER_UPDATE_SUCCESS:
+      return { loading: false, success: true }
+    case ADMIN_USER_UPDATE_FAIL:
+      return { loading: false, error: action.payload }
+    case ADMIN_USER_UPDATE_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const adminUserDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADMIN_USER_DELETE_REQUEST:
+      return { loading: true }
+    case ADMIN_USER_DELETE_SUCCESS:
+      return { loading: false, success: true }
+    case ADMIN_USER_DELETE_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col, ListGroup } from 'react-bootstrap'
+import { Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Components/Message.js'
 import Loader from '../Components/Loader.js'
-import { listUsers } from '../Actions/userActions.js'
-import { Link } from 'react-router-dom'
+import { listUsers, userDeleteAdmin } from '../Actions/userActions.js'
 import './AdminAllUsersScreen.css'
 
-const AdminAllUsersScreen = ({ history, location }) => {
+const AdminAllUsersScreen = ({ history }) => {
   const dispatch = useDispatch()
   const login = useSelector((state) => state.login)
   const { userInfo } = login
@@ -16,18 +15,21 @@ const AdminAllUsersScreen = ({ history, location }) => {
   const usersList = useSelector((state) => state.usersList)
   const { loading, error, users } = usersList
 
+  const adminUserDelete = useSelector((state) => state.adminUserDelete)
+  const { success } = adminUserDelete
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo, success])
 
   const deleteHandler = (id) => {
-    // if (window.confirm('Are you sure')) {
-    //   dispatch(deleteUser(id))
-    // }
+    if (window.confirm('Are you sure')) {
+      dispatch(userDeleteAdmin(id))
+    }
     //DELETE THE USER
   }
 

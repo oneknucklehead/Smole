@@ -101,23 +101,25 @@ const ProductScreen = ({ history, match }) => {
                   <div className='my-2 fw-bold'>Please select size.</div>
                 </Row>
                 <Row>
-                  <ul className='sizeContainer'>
-                    {product.sizes?.map((size) => (
-                      <li style={{ listStyle: 'none' }}>
-                        <input
-                          type='radio'
-                          id={size}
-                          value={size}
-                          name='sizeSelector'
-                          disabled={product.countInStock === 0}
-                          onClick={sizeHandler}
-                        ></input>
-                        <label for={size}>
-                          <span>{size}</span>
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
+                  {product.sizes !== '' && (
+                    <ul className='sizeContainer'>
+                      {product.sizes?.map((size) => (
+                        <li style={{ listStyle: 'none' }}>
+                          <input
+                            type='radio'
+                            id={size}
+                            value={size}
+                            name='sizeSelector'
+                            disabled={product.countInStock === 0}
+                            onClick={sizeHandler}
+                          ></input>
+                          <label for={size}>
+                            <span>{size}</span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {product.countInStock !== 0 && itemSize === '' ? (
                     <Message variant='danger' color='red'>

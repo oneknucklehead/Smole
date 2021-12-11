@@ -1,13 +1,22 @@
 import {
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
   SELLER_SHOP_DETAILS_FAIL,
   SELLER_SHOP_DETAILS_REQUEST,
   SELLER_SHOP_DETAILS_SUCCESS,
+  SHOP_CREATE_FAIL,
+  SHOP_CREATE_REQUEST,
+  SHOP_CREATE_SUCCESS,
   SHOP_DELETE_FAIL,
   SHOP_DELETE_REQUEST,
   SHOP_DELETE_SUCCESS,
@@ -17,6 +26,9 @@ import {
   SHOP_LIST_FAIL,
   SHOP_LIST_REQUEST,
   SHOP_LIST_SUCCESS,
+  SHOP_UPDATE_FAIL,
+  SHOP_UPDATE_REQUEST,
+  SHOP_UPDATE_SUCCESS,
 } from '../Constants/shopConstants'
 import axios from 'axios'
 
@@ -111,6 +123,71 @@ export const productDelete =
     }
   }
 
+export const createProduct = (shopid) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_CREATE_REQUEST })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.post(`/api/shop/${shopid}`, {}, config)
+    dispatch({
+      type: PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateProduct =
+  (shopid, product) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: PRODUCT_UPDATE_REQUEST })
+
+      const {
+        login: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.put(
+        `/api/${shopid}/product/${product._id}`,
+        product,
+        config
+      )
+      dispatch({
+        type: PRODUCT_UPDATE_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
 export const sellerShopsList = () => async (dispatch, getState) => {
   try {
     dispatch({ type: SELLER_SHOP_DETAILS_REQUEST })
@@ -161,6 +238,66 @@ export const adminDeleteShop = (shopid) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: SHOP_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const createShop = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOP_CREATE_REQUEST })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.post(`/api/shop/`, {}, config)
+    dispatch({
+      type: SHOP_CREATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: SHOP_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateShop = (shop) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOP_UPDATE_REQUEST })
+
+    const {
+      login: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.put(`/api/shop/${shop._id}`, shop, config)
+    dispatch({
+      type: SHOP_UPDATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: SHOP_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

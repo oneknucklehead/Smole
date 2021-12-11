@@ -131,8 +131,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
 
     products: [...products],
   },
@@ -146,8 +144,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
 
     products: [...products],
   },
@@ -161,8 +157,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
 
     products: [...products],
   },
@@ -177,8 +171,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
 
     products: [...products],
   },
@@ -192,8 +184,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
 
     products: [...products],
   },
@@ -207,8 +197,6 @@ const shops = [
     //   password: '123456',
     //   isAdmin: true,
     // },
-    paymentQR: '/images/QR.jpg',
-    paymentUPI: '8420317786@paytm',
     products: [...products],
   },
 ]

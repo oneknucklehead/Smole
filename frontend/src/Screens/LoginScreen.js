@@ -20,7 +20,7 @@ const LoginScreen = ({ history, location }) => {
 
   const loginHandler = (e) => {
     e.preventDefault()
-    console.log(email + ' ' + password)
+    // console.log(email + ' ' + password)
     dispatch(userLogin({ email, password }))
   }
   useEffect(() => {
