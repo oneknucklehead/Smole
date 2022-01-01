@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Col, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -75,7 +75,7 @@ const AdminAllProducts = ({ history }) => {
                 <Message variant='success'>{resultShop.message}</Message>
               )}
               {shops?.map((shop) => (
-                <>
+                <Fragment key={shop._id}>
                   <Row className='my-3'>
                     <Col>
                       <span>
@@ -108,29 +108,27 @@ const AdminAllProducts = ({ history }) => {
                     </thead>
                     <tbody>
                       {shop.products.map((product) => (
-                        <>
-                          <tr key={product._id}>
-                            <td>{product._id}</td>
-                            <td>{product.name}</td>
-                            <td>{product.brand}</td>
-                            <td>{product.category}</td>
-                            <td>{product.price}</td>
-                            <td>
-                              <button
-                                className='deleteBtn'
-                                onClick={() =>
-                                  deleteProductHandler(shop._id, product._id)
-                                }
-                              >
-                                <i className='fas fa-trash'></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </>
+                        <tr key={product._id}>
+                          <td>{product._id}</td>
+                          <td>{product.name}</td>
+                          <td>{product.brand}</td>
+                          <td>{product.category}</td>
+                          <td>{product.price}</td>
+                          <td>
+                            <button
+                              className='deleteBtn'
+                              onClick={() =>
+                                deleteProductHandler(shop._id, product._id)
+                              }
+                            >
+                              <i className='fas fa-trash'></i>
+                            </button>
+                          </td>
+                        </tr>
                       ))}
                     </tbody>
                   </Table>
-                </>
+                </Fragment>
               ))}
             </>
           )}

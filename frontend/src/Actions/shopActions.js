@@ -1,4 +1,7 @@
 import {
+  CREATE_REVIEW_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
@@ -305,3 +308,38 @@ export const updateShop = (shop) => async (dispatch, getState) => {
     })
   }
 }
+
+export const createReview =
+  (shopId, productId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: CREATE_REVIEW_REQUEST })
+
+      const {
+        login: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.post(
+        `/api/${shopId}/product/${productId}/review`,
+        review,
+        config
+      )
+      dispatch({
+        type: CREATE_REVIEW_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: CREATE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }

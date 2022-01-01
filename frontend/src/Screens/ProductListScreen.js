@@ -30,7 +30,17 @@ const ProductListScreen = ({ match }) => {
       <Link className='btn btn-dark my-3' to='/'>
         Go Back
       </Link>
-      <h3>{shop.name} Products</h3>
+      <h3
+        style={{
+          textAlign: 'center',
+          fontSize: '4.5em',
+          letterSpacing: '-1px',
+          backgroundColor: '#ed2d2f',
+          color: 'white',
+        }}
+      >
+        {shop.name} Products
+      </h3>
       {error ? (
         <Message variant='warning' color='red'>
           {error}

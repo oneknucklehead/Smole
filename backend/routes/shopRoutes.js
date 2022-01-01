@@ -10,6 +10,7 @@ import {
   updateShop,
   addProduct,
   updateProduct,
+  createReview,
 } from '../controllers/shopControllers.js'
 import { protect, admin, seller } from '../middleware/authMiddleware.js'
 const router = express.Router()
@@ -29,5 +30,7 @@ router
   .get(getProductById)
   .delete(protect, deleteProduct)
   .put(protect, seller, updateProduct)
+
+router.route('/:shopid/product/:productid/review').post(protect, createReview)
 
 export default router

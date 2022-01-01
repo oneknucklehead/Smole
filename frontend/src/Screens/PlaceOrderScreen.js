@@ -39,6 +39,7 @@ const PlaceOrderScreen = ({ history }) => {
     dispatch(
       orderCreator({
         orderItems: cart.cartItems,
+        shop: cart.cartItems[0].shopId,
         shippingAddress: shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
@@ -86,7 +87,7 @@ const PlaceOrderScreen = ({ history }) => {
               ) : (
                 <ListGroup variant='flush'>
                   {cart.cartItems.map((item) => (
-                    <ListGroup.Item>
+                    <ListGroup.Item key={item.productId}>
                       <Row>
                         <Col md={2}>
                           <Image
@@ -112,7 +113,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </ListGroup>
                         </Col>
                         <Col md={4}>
-                          {item.quantity} x {item.price} = Rs.
+                          {item.quantity} x {item.price} = $
                           {item.quantity * item.price}
                         </Col>
                       </Row>

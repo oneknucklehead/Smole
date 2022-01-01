@@ -6,6 +6,7 @@ import {
   productDeletedReducer,
   productDetailsReducer,
   productUpdateReducer,
+  reviewCreatedReducer,
   sellerShopsReducer,
   shopCreateReducer,
   shopDeletedReducer,
@@ -15,10 +16,13 @@ import {
 } from './Reducers/shopReducers.js'
 import { cartReducer } from './Reducers/cartReducers.js'
 import {
+  adminOrderListReducer,
   orderCreateReducer,
+  orderDeliverReducer,
   orderDetailsReducer,
   orderListReducer,
   orderPayReducer,
+  sellerOrderListReducer,
 } from './Reducers/orderReducers.js'
 import {
   adminUserDeleteReducer,
@@ -59,10 +63,14 @@ const reducer = combineReducers({
   orderCreated: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderDeliver: orderDeliverReducer,
   userOrdersList: orderListReducer,
   adminUserUpdate: adminUserUpdateReducer,
   usersList: userListReducer,
   adminUserDelete: adminUserDeleteReducer,
+  adminOrderList: adminOrderListReducer,
+  sellerOrderList: sellerOrderListReducer,
+  reviewCreated: reviewCreatedReducer,
 })
 const initialState = {
   cart: {

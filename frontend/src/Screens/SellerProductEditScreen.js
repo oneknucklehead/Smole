@@ -23,7 +23,6 @@ const SellerProductEditScreen = ({ history, match }) => {
   const [countInStock, setCountInStock] = useState(1)
   const [uploading, setUploading] = useState(false)
   const [errUpload, setErrUpload] = useState(null)
-  const [uploadPercentage, setUploadPercentage] = useState(0)
   let [sizes, setSizes] = useState([])
 
   const login = useSelector((state) => state.login)
@@ -37,7 +36,6 @@ const SellerProductEditScreen = ({ history, match }) => {
     loading: loadingUpdate,
     success: successUpdate,
     error: errorUpdate,
-    product: updatedProduct,
   } = productUpdate
 
   const uploadFileHandler = async (e) => {

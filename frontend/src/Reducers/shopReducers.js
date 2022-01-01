@@ -1,4 +1,8 @@
 import {
+  CREATE_REVIEW_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_REVIEW_RESET,
+  CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_RESET,
@@ -175,6 +179,21 @@ export const shopUpdateReducer = (state = {}, action) => {
     case SHOP_UPDATE_RESET:
       return {}
 
+    default:
+      return state
+  }
+}
+
+export const reviewCreatedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_REVIEW_REQUEST:
+      return { loading: true }
+    case CREATE_REVIEW_SUCCESS:
+      return { loading: false, success: true }
+    case CREATE_REVIEW_FAIL:
+      return { loading: false, error: action.payload }
+    case CREATE_REVIEW_RESET:
+      return {}
     default:
       return state
   }

@@ -42,7 +42,18 @@ const OrdersListScreen = ({ history }) => {
           <Loader />
         ) : (
           <Col md={9}>
-            <h3>My Orders</h3>
+            <h3
+              style={{
+                textAlign: 'center',
+                fontSize: '2em',
+                letterSpacing: '-1px',
+                backgroundColor: '#b87c9b',
+                color: 'white',
+              }}
+              className='my-4'
+            >
+              Orders
+            </h3>
 
             {error ? (
               <Message variant='danger'>{error}</Message>

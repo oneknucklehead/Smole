@@ -10,6 +10,7 @@ import './LoginScreen.css'
 
 const RegisterScreen = ({ history, location }) => {
   const [name, setName] = useState('')
+  // const [isSeller, setIsSeller] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [cPassword, setCPassword] = useState('')
@@ -105,6 +106,15 @@ const RegisterScreen = ({ history, location }) => {
                     onChange={(e) => setCPassword(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
+                {/* <Form.Group controlId='isSeller'>
+                  <Form.Label className='my-3'>
+                    register as a seller?
+                  </Form.Label>
+                  <Form.Check
+                    value={isSeller}
+                    onChange={(e) => console.log(!isSeller)}
+                  ></Form.Check>
+                </Form.Group> */}
                 {errorPass && <p style={{ color: '#ec3d25' }}>Not Matched.</p>}
 
                 <Row>

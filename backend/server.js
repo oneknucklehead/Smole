@@ -9,6 +9,9 @@ import orderRoutes from './routes/orderRoutes.js'
 import imageUploadRoutes from './routes/imageUploadRoutes.js'
 import { errorHandler, notFound } from './middleware/errorMiddleWare.js'
 import path from 'path'
+import Order from './models/orderModel.js'
+import Shops from './models/shopModel.js'
+import asyncHandler from 'express-async-handler'
 // import fileUpload from 'express-fileupload'
 // import { upload } from './controllers/uploadController.js'
 // import asyncHandler from 'express-async-handler'
@@ -17,15 +20,39 @@ import path from 'path'
 
 connectDB()
 app.use(express.json())
-app.get('/', (req, res) => {
-  res.send('API is running')
-})
+
 app.use('/api', shopRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', imageUploadRoutes)
 
+//get shop clientId
+app.get(
+  '/api/config/paypal/:orderno',
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.orderno)
+    if (order) {
+      const shop = await Shops.findById(order.orderItems[0].shopId)
+      res.send(shop.clientId)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+  })
+)
+
 const __dirname = path.resolve()
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running')
+  })
+}
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(notFound)

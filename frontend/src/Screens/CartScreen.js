@@ -59,9 +59,20 @@ const CartScreen = ({ match, location, history }) => {
         <Row>
           <Col md={8}>
             <ListGroup>
-              <h1>Cart</h1>
+              <h1
+                style={{
+                  textAlign: 'center',
+                  fontSize: '3em',
+                  padding: '5px',
+                  letterSpacing: '-1px',
+                  backgroundColor: '#ed2d2f',
+                  color: 'white',
+                }}
+              >
+                Cart
+              </h1>
               {cartItems.map((item) => (
-                <ListGroup.Item>
+                <ListGroup.Item key={item.productId}>
                   <Row>
                     <Col md={3}>
                       <Image src={item.image} fluid></Image>
@@ -84,7 +95,7 @@ const CartScreen = ({ match, location, history }) => {
                       </Row>
                       <div className='optionsContainer'>
                         <div className='qtyContainer'>
-                          <label for='qty'>Qty:</label>
+                          <label htmlFor='qty'>Qty:</label>
                           <select
                             value={item.quantity}
                             id='qty'
@@ -109,7 +120,7 @@ const CartScreen = ({ match, location, history }) => {
                           </select>
                         </div>
                         <div className='sizeOptionContainer'>
-                          <label for='size'>Size:</label>
+                          <label htmlFor='size'>Size:</label>
                           <select
                             id='size'
                             value={item.size}
@@ -141,7 +152,7 @@ const CartScreen = ({ match, location, history }) => {
                         </button>
                       </Row>
                     </Col>
-                    <Col md={2}>Rs.{item.price}</Col>
+                    <Col md={2}>${item.price}</Col>
                   </Row>
                 </ListGroup.Item>
               ))}
@@ -155,7 +166,7 @@ const CartScreen = ({ match, location, history }) => {
             </h3>
             <ListGroup>
               <ListGroup.Item>
-                Price:{' '}
+                Price: $
                 {cartItems
                   .reduce(
                     (acc, item) => acc + Number(item.quantity) * item.price,

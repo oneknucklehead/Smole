@@ -16,6 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
       isSeller: user.isSeller,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
+      clientId: user.clientId,
     })
   } else {
     res.status(401)
@@ -50,6 +51,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name
+    user.clientId = req.body.clientId || user.clientId
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -58,6 +60,7 @@ const updateProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      clientId: updatedUser.clientId,
       isSeller: updatedUser.isSeller,
       isAdmin: updatedUser.isAdmin,
       token: generateToken(updatedUser._id),

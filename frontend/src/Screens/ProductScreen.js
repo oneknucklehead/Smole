@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup } from 'react-bootstrap'
+import { Row, Col, ListGroup, Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Rating from '../Components/Rating'
 import Loader from '../Components/Loader'
 import './ProductScreen.css'
-import { productDetail } from '../Actions/shopActions.js'
+import { createReview, productDetail } from '../Actions/shopActions.js'
 import Message from '../Components/Message.js'
 import { clearCart } from '../Actions/cartActions.js'
+import { CREATE_REVIEW_RESET } from '../Constants/shopConstants'
 
 const ProductScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const [diffShop, setDiffShop] = useState(false)
   var diffShopSetter = false
   const [qty, setQty] = useState(1)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
   const [itemSize, setItemSize] = useState('')
+
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
+
+  const login = useSelector((state) => state.login)
+  const { userInfo } = login
+
+  const reviewCreated = useSelector((state) => state.reviewCreated)
+  const { success: successReview, error: errorReview } = reviewCreated
 
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   cartItems &&
     cartItems.length > 0 &&
+    // eslint-disable-next-line
     cartItems?.map((item) => {
       if (item.shopId !== match.params.shopid) {
-        // setDiffShop(true)
-        // diffShop = true
-        // console.log(diffShop)
-        // useEffect(() => {
         diffShopSetter = true
-        // }, [])
         return diffShopSetter
       }
     })
@@ -38,7 +44,7 @@ const ProductScreen = ({ history, match }) => {
     setOpen(!open)
   }
   const addToCartHandler = () => {
-    if (itemSize !== '' && !diffShop)
+    if ((itemSize !== '' && !diffShop) || product.sizes !== [])
       history.push(
         `/cart/${match.params.shopid}/${match.params.productid}?qty=${qty}?size=${itemSize}`
       )
@@ -49,15 +55,32 @@ const ProductScreen = ({ history, match }) => {
     setDiffShop(false)
     diffShopSetter = false
   }
+  const reviewSubmitHandller = (e) => {
+    e.preventDefault()
+    dispatch(
+      createReview(match.params.shopid, match.params.productid, {
+        rating,
+        comment,
+      })
+    )
+  }
   const sizeHandler = (e) => {
     setItemSize(e.target.value)
   }
   useEffect(() => {
-    dispatch(productDetail(match.params.shopid, match.params.productid))
+    if (successReview) {
+      setRating(0)
+      setComment('')
+    }
+    if (!product || !product._id || product._id !== match.params.id) {
+      dispatch(productDetail(match.params.shopid, match.params.productid))
+      dispatch({ type: CREATE_REVIEW_RESET })
+    }
     if (diffShopSetter) {
       setDiffShop(true)
     }
-  }, [match, dispatch, diffShopSetter])
+    // eslint-disable-next-line
+  }, [match, dispatch, diffShopSetter, successReview])
 
   if (loading) {
     return (
@@ -78,9 +101,84 @@ const ProductScreen = ({ history, match }) => {
       ) : (
         <Row>
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid thumbnail />
+            <div className='imageWrapper'>
+              <img
+                src={product.image}
+                alt={product.name}
+                className='productImage'
+              />
+            </div>
+            <Row>
+              <h5 className='mt-5'>Customer Reviews ({product.numReviews})</h5>
+              {product.reviews?.length === 0 && (
+                <Message>This product has no reviews</Message>
+              )}
+              <ListGroup variant='flush'>
+                {product.reviews?.map((review) => (
+                  <ListGroup.Item key={review._id}>
+                    <Row>
+                      <Col md={1} className='reviewStar'>
+                        <div className='reviewStarContent'>
+                          {review.rating}
+                          <i class='fas fa-star'></i>
+                        </div>
+                      </Col>
+                      <Col className='m-0 p-0'>
+                        <p className='reviewContent1'>{review.comment}</p>
+                        <p className='reviewContent2'>
+                          {review.name} | {review.createdAt.substring(1, 10)}
+                        </p>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                ))}
+                <ListGroup.Item>
+                  <h4>Write your review below:</h4>
+                  {errorReview && (
+                    <Message variant={'danger'}>{errorReview}</Message>
+                  )}
+                  {userInfo ? (
+                    <Form onSubmit={reviewSubmitHandller}>
+                      <Form.Group controlId='rating'>
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control
+                          as='select'
+                          value={rating}
+                          className='m-0'
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value=''>Choose One..</option>
+                          <option value='1'>1 - Poor</option>
+                          <option value='2'>2 - Fair</option>
+                          <option value='3'>3 - Good</option>
+                          <option value='4'>4 - Great</option>
+                          <option value='5'>5 - Awesome</option>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group controlId='comment'>
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          row='3'
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button className='my-3' type='submit' variant='primary'>
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      You must <Link to='/login'>login</Link> to comment
+                    </Message>
+                  )}
+                </ListGroup.Item>
+              </ListGroup>
+            </Row>
           </Col>
-          <Col md={4}>
+          <Col></Col>
+          <Col md={5}>
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h2 className='productName'>{product.name}</h2>
@@ -93,54 +191,58 @@ const ProductScreen = ({ history, match }) => {
                   text={`${product.numReviews} reviews`}
                 />
               </ListGroup.Item>
-              <ListGroup.Item className='fw-bold'>
-                Price: Rs. {product.price}
+              <ListGroup.Item className='fw-bold price'>
+                Price: ${product.price}
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <div className='my-2 fw-bold'>Please select size.</div>
-                </Row>
-                <Row>
-                  {product.sizes !== '' && (
-                    <ul className='sizeContainer'>
-                      {product.sizes?.map((size) => (
-                        <li style={{ listStyle: 'none' }}>
-                          <input
-                            type='radio'
-                            id={size}
-                            value={size}
-                            name='sizeSelector'
-                            disabled={product.countInStock === 0}
-                            onClick={sizeHandler}
-                          ></input>
-                          <label for={size}>
-                            <span>{size}</span>
-                          </label>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+              {product.sizes && product.sizes !== [] && (
+                <ListGroup.Item>
+                  <Row>
+                    <div className='my-2 fw-bold'>Please select size.</div>
+                  </Row>
+                  <Row>
+                    {product.sizes !== '' && (
+                      <ul className='sizeContainer'>
+                        {product.sizes?.map((size) => (
+                          <li style={{ listStyle: 'none' }} key={size}>
+                            <input
+                              type='radio'
+                              id={size}
+                              value={size}
+                              name='sizeSelector'
+                              disabled={product.countInStock === 0}
+                              onClick={sizeHandler}
+                            ></input>
+                            <label htmlFor={size}>
+                              <span>{size}</span>
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
 
-                  {product.countInStock !== 0 && itemSize === '' ? (
-                    <Message variant='danger' color='red'>
-                      Please select size.
-                    </Message>
-                  ) : (
-                    ''
-                  )}
-                </Row>
+                    {product.countInStock !== 0 &&
+                    product.size &&
+                    itemSize === '' ? (
+                      <Message variant='danger' color='red'>
+                        Please select size.
+                      </Message>
+                    ) : (
+                      ''
+                    )}
+                  </Row>
 
-                <Row>
-                  <div className='my-2 fw-bold'>
-                    {product.countInStock > 0 &&
-                      `Total ${product.countInStock} left`}
-                  </div>
-                </Row>
-              </ListGroup.Item>
+                  <Row>
+                    <div className='my-2 fw-bold'>
+                      {product.countInStock > 0 &&
+                        `Total ${product.countInStock} left`}
+                    </div>
+                  </Row>
+                </ListGroup.Item>
+              )}
               {product.countInStock > 0 && (
                 <ListGroup.Item>
                   <form>
-                    <label for='qty' className='fw-bold'>
+                    <label htmlFor='qty' className='fw-bold'>
                       Quantity
                     </label>
                     <select

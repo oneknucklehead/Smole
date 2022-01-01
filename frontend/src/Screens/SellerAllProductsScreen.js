@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from 'react'
-import { Col, Row, Table, Button } from 'react-bootstrap'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Col, Row, Table, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
@@ -18,84 +18,23 @@ import Loader from '../Components/Loader'
 import Message from '../Components/Message.js'
 import './SellerAllProductsScreen.css'
 import { LinkContainer } from 'react-router-bootstrap'
+import { updateUserDetails } from '../Actions/userActions.js'
+import { LOGOUT, UPDATE_DETAILS_RESET } from '../Constants/userConstants.js'
 
 const SellerAllProductsScreen = ({ history }) => {
-  const dispatch = useDispatch()
-  const sellerShops = useSelector((state) => state.sellerShops)
-  const { loading, error, shops } = sellerShops
-
+  const [clientId, setClientId] = useState('')
   const login = useSelector((state) => state.login)
   const { userInfo } = login
 
-  const productDeleted = useSelector((state) => state.productDeleted)
-  const {
-    loading: loadingDeleted,
-    error: errorDeleted,
-    result,
-  } = productDeleted
+  const updateDetails = useSelector((state) => state.updateDetails)
+  const { success } = updateDetails
 
-  const shopCreate = useSelector((state) => state.shopCreate)
-  const {
-    loading: loadingShopCreated,
-    error: errorShopCreated,
-    success: successShopCreated,
-    shop: createdShop,
-  } = shopCreate
-
-  const productCreated = useSelector((state) => state.productCreated)
-  const {
-    loading: loadingProductCreated,
-    error: errorProductCreated,
-    success: successProductCreated,
-    product: createdProduct,
-  } = productCreated
-
-  const deleteHandler = (shopid, productid) => {
-    if (window.confirm('are you sure you want to delete this product?')) {
-      dispatch(productDelete(shopid, productid))
-    }
+  const onSubmitHandler = async (e) => {
+    e.preventDefault()
+    dispatch(updateUserDetails({ clientId }))
+    // console.log(data)
   }
-  const createShopHandler = () => {
-    dispatch(createShop())
-  }
-  const createProductHandler = (shopid) => {
-    dispatch(createProduct(shopid))
-  }
-
-  useEffect(() => {
-    dispatch({ type: SHOP_CREATE_RESET })
-
-    if (!userInfo && !userInfo?.isSeller) {
-      history.push('/login')
-    }
-    if (successShopCreated) {
-      history.push(`/seller/shop/${createdShop._id}/edit`)
-    }
-    if (successProductCreated) {
-      history.push(
-        `/seller/${createdProduct.shopid}/product/${
-          createdProduct.products[createdProduct.products.length - 1]._id
-        }/edit`
-      )
-      // console.log(createdProduct[createdProduct.length - 1]._id)
-      dispatch({ type: PRODUCT_CREATE_RESET })
-    } else {
-      dispatch({ type: SHOP_DETAILS_RESET })
-      dispatch({ type: PRODUCT_DETAILS_RESET })
-      dispatch(sellerShopsList())
-    }
-  }, [
-    dispatch,
-    history,
-    userInfo,
-    result,
-    successShopCreated,
-    createdShop,
-    successProductCreated,
-    createdProduct,
-  ])
-
-  return (
+  const connected = () => (
     <>
       <Row>
         <Col>
@@ -197,6 +136,152 @@ const SellerAllProductsScreen = ({ history }) => {
           )}
         </Col>
       </Row>
+    </>
+  )
+  const notConnected = () => (
+    <>
+      <Row className='justify-content-md-center my-4'>
+        <Col md={6}>
+          <h4>Already have a paypal business account?</h4>
+          <div className='text-center'>
+            &nbsp;
+            <a
+              href='https://www.paypal.com/signin'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Sign In
+            </a>
+            &nbsp;-&gt; &nbsp;
+            <a
+              href='https://developer.paypal.com/developer/applications/'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Go to dashboard
+            </a>
+            &nbsp; -&gt; &nbsp;
+            <span>My Apps &amp; Credentials</span>
+          </div>
+          <p>
+            Then{' '}
+            <a href='https://developer.paypal.com/developer/applications/create'>
+              create
+            </a>{' '}
+            a merchant app under your shop name and copy paste the Client Id
+            below
+          </p>
+          <h3 style={{ textAlign: 'center' }}>OR</h3>
+          Create a new business account{' '}
+          <a href='https://www.paypal.com/in/webapps/mpp/account-selection'>
+            here
+          </a>{' '}
+          then follow the above said steps to create your payment method.
+          <Form className='my-4' onSubmit={onSubmitHandler}>
+            <Form.Group controlId='clientId'>
+              <Form.Control
+                type='text'
+                placeholder='Enter your Client Id'
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p>
+              Note: Once you submit your client id, you will be logged out for
+              security purposes
+            </p>
+            <Button type='submit' variant='primary' className='my-2'>
+              Submit
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </>
+  )
+  const dispatch = useDispatch()
+  const sellerShops = useSelector((state) => state.sellerShops)
+  const { loading, error, shops } = sellerShops
+
+  const productDeleted = useSelector((state) => state.productDeleted)
+  const {
+    loading: loadingDeleted,
+    error: errorDeleted,
+    result,
+  } = productDeleted
+
+  const shopCreate = useSelector((state) => state.shopCreate)
+  const {
+    loading: loadingShopCreated,
+    error: errorShopCreated,
+    success: successShopCreated,
+    shop: createdShop,
+  } = shopCreate
+
+  const productCreated = useSelector((state) => state.productCreated)
+  const {
+    loading: loadingProductCreated,
+    error: errorProductCreated,
+    success: successProductCreated,
+    product: createdProduct,
+  } = productCreated
+
+  const deleteHandler = (shopid, productid) => {
+    if (window.confirm('are you sure you want to delete this product?')) {
+      dispatch(productDelete(shopid, productid))
+    }
+  }
+  const createShopHandler = () => {
+    dispatch(createShop())
+  }
+  const createProductHandler = (shopid) => {
+    dispatch(createProduct(shopid))
+  }
+
+  useEffect(() => {
+    dispatch({ type: SHOP_CREATE_RESET })
+
+    if (!userInfo && !userInfo?.isSeller) {
+      history.push('/login')
+    }
+    if (userInfo && userInfo.client_id) {
+      setClientId(userInfo.client_id)
+    }
+    if (success) {
+      dispatch({ type: LOGOUT })
+      dispatch({ type: UPDATE_DETAILS_RESET })
+    }
+    if (successShopCreated) {
+      history.push(`/seller/shop/${createdShop._id}/edit`)
+    }
+    if (successProductCreated) {
+      history.push(
+        `/seller/${createdProduct.shopid}/product/${
+          createdProduct.products[createdProduct.products.length - 1]._id
+        }/edit`
+      )
+      // console.log(createdProduct[createdProduct.length - 1]._id)
+      dispatch({ type: PRODUCT_CREATE_RESET })
+    } else {
+      dispatch({ type: SHOP_DETAILS_RESET })
+      dispatch({ type: PRODUCT_DETAILS_RESET })
+      dispatch(sellerShopsList())
+    }
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    result,
+    successShopCreated,
+    createdShop,
+    success,
+    successProductCreated,
+    createdProduct,
+  ])
+
+  return (
+    <>
+      {userInfo && userInfo.clientId ? connected() : notConnected()}
+      {/* {connected()} */}
     </>
   )
 }

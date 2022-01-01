@@ -108,7 +108,18 @@ const ProfileScreen = ({ history, location, match }) => {
 
             {componentToMount === '/myorders' && <OrdersComponent />}
             {componentToMount === '/userList' && <p>hello</p>} */}
-            <h3>My Profile</h3>
+            <h3
+              style={{
+                textAlign: 'center',
+                fontSize: '2em',
+                letterSpacing: '-1px',
+                backgroundColor: '#b87c9b',
+                color: 'white',
+              }}
+              className='my-4'
+            >
+              Profile
+            </h3>
             {loading && <Loader />}
             <Form onSubmit={updateHandler}>
               <ListGroup>

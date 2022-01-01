@@ -23,6 +23,7 @@ import AdminUserEditScreen from './Screens/AdminUserEditScreen'
 import SellerAllProductsScreen from './Screens/SellerAllProductsScreen'
 import SellerShopEditScreen from './Screens/SellerShopEditScreen'
 import SellerProductEditScreen from './Screens/SellerProductEditScreen'
+import SellerAllOrdersScreen from './Screens/SellerAllOrdersScreen'
 const App = () => {
   return (
     <>
@@ -60,6 +61,7 @@ const App = () => {
               component={AdminUserEditScreen}
             />
             <Route path='/admin/orderlist' component={AdminAllOrdersScreen} />
+            <Route path='/seller/orderlist' component={SellerAllOrdersScreen} />
             <Route
               path='/admin/productlist'
               component={AdminAllProductsScreen}

@@ -7,6 +7,11 @@ const orderSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    shop: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Shop',
+    },
     orderItems: [
       {
         name: { type: String, required: true },

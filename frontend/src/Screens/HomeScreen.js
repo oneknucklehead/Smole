@@ -17,7 +17,17 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Shops</h1>
+      <h1
+        style={{
+          textAlign: 'center',
+          fontSize: '4.5em',
+          letterSpacing: '-1px',
+          backgroundColor: '#ed2d2f',
+          color: 'white',
+        }}
+      >
+        Shops
+      </h1>
       {loading ? (
         <div className='loader'>
           <Loader />
@@ -30,18 +40,23 @@ const HomeScreen = () => {
         <Row>
           {shops.map((shop) => (
             <Col key={shop._id} sm={12} md={6} lg={3} xl={3} className='my-2 '>
-              <Card border='light'>
-                <div className='cardContents'>
-                  <h2>{shop.name}</h2>
-                  <p className='tagline'>"{shop.tagline}"</p>
-                  <p>{shop.description}</p>
-                  <Link
-                    to={`/shop/${shop._id}`}
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <div className='viewButton'>view</div>
-                  </Link>
-                </div>
+              <Card>
+                <Link to={`/shop/${shop._id}`} className='cardShop'>
+                  <div className='cardOverlay'>
+                    <div className='cardHeader'>
+                      <svg
+                        className='cardArc'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path />
+                      </svg>
+                      <div className='cardHeaderText'>
+                        <h3 className='cardTitle'>{shop.name}</h3>
+                        <span className='cardTagline'>{shop.tagline}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               </Card>
             </Col>
           ))}

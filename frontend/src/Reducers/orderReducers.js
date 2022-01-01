@@ -1,9 +1,20 @@
 import {
+  ORDERS_LIST_ADMIN_FAIL,
+  ORDERS_LIST_ADMIN_REQUEST,
+  ORDERS_LIST_ADMIN_SUCCESS,
+  ORDERS_LIST_SELLER_FAIL,
+  ORDERS_LIST_SELLER_REQUEST,
+  ORDERS_LIST_SELLER_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELIVERED_FAIL,
+  ORDER_DELIVERED_REQUEST,
+  ORDER_DELIVERED_RESET,
+  ORDER_DELIVERED_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_RESET,
   ORDER_DETAILS_SUCCESS,
   ORDER_LIST_FAIL,
   ORDER_LIST_REQUEST,
@@ -56,6 +67,8 @@ export const orderDetailsReducer = (
         loading: false,
         error: action.payload,
       }
+    case ORDER_DETAILS_RESET:
+      return {}
     default:
       return state
   }
@@ -71,7 +84,7 @@ export const orderPayReducer = (state = {}, action) => {
     case ORDER_PAY_SUCCESS:
       return {
         loading: false,
-        order: action.payload,
+        success: true,
       }
     case ORDER_PAY_FAIL:
       return {
@@ -79,6 +92,30 @@ export const orderPayReducer = (state = {}, action) => {
         error: action.payload,
       }
     case ORDER_PAY_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const orderDeliverReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_DELIVERED_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ORDER_DELIVERED_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case ORDER_DELIVERED_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case ORDER_DELIVERED_RESET:
       return {}
     default:
       return state
@@ -97,6 +134,50 @@ export const orderListReducer = (state = { order: [] }, action) => {
         orders: action.payload,
       }
     case ORDER_LIST_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+
+    default:
+      return state
+  }
+}
+
+export const adminOrderListReducer = (state = { orders: [] }, action) => {
+  switch (action.type) {
+    case ORDERS_LIST_ADMIN_REQUEST:
+      return {
+        loading: true,
+      }
+    case ORDERS_LIST_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        orders: action.payload,
+      }
+    case ORDERS_LIST_ADMIN_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+
+    default:
+      return state
+  }
+}
+
+export const sellerOrderListReducer = (state = { orders: [] }, action) => {
+  switch (action.type) {
+    case ORDERS_LIST_SELLER_REQUEST:
+      return {
+        loading: true,
+      }
+    case ORDERS_LIST_SELLER_SUCCESS:
+      return {
+        loading: false,
+        orders: action.payload,
+      }
+    case ORDERS_LIST_SELLER_FAIL:
       return {
         loading: false,
         error: action.payload,
