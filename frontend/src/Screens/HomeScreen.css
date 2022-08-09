@@ -67,10 +67,11 @@ p {
   transform: translateY(0);
 } */
 .cardHeader {
-  /* position: relative; */
+  position: absolute;
   /* display: flex; */
   /* gap: 2em; */
   /* align-items: center; */
+  width: 100%;
   padding: 2em;
   border-radius: 40px 0 0 0;
   background-color: #fff;
